@@ -66,4 +66,4 @@ jobs:
           app-name: 'tech0-gen-8-step4-richconnections-front'
           slot-name: 'Production'
           package: ./deploy
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6ACB4F54C3A8420DA1B86E4D6C45FA27 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_21CA7F68429B4767A9138BDC6E8047F4 }}
