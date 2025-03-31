@@ -10,7 +10,6 @@ export default function Home() {
       <main className="flex-grow flex flex-col items-center p-4">
         {/* SearchForm コンポーネントを利用 */}
         <SearchForm />
-        <Ad />
       </main>
       <Footer />
     </div>
