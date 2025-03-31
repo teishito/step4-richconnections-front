@@ -1,6 +1,5 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Ad from "../components/Ad";
 import SearchForm from "../components/SearchForm";
 
 export default function Home() {
