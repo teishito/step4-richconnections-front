@@ -31,7 +31,7 @@ export default function Header() {
         {/* ロゴ */}
         <Link href="/">
           <h1 className="text-xl font-bold cursor-pointer" aria-label="Home">
-            FortuneDinner
+            Richness
           </h1>
         </Link>
 
