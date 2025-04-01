@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function DiagnosisAnalysis() {
   const [analysis, setAnalysis] = useState("");
@@ -38,19 +38,12 @@ export default function DiagnosisAnalysis() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
-      <main className="flex-grow max-w-3xl mx-auto p-6">
-        <h2 className="text-2xl font-bold mb-4">経営分析結果</h2>
-        {loading ? (
-          <p className="text-center text-gray-600">分析中...</p>
-        ) : (
-          <div className="whitespace-pre-wrap bg-white p-4 rounded shadow">
-            {analysis}
-          </div>
-        )}
-      </main>
-      <Footer />
+    <div className="whitespace-pre-wrap bg-white p-4 rounded shadow">
+      {loading ? (
+        <p className="text-center text-gray-600">分析中...</p>
+      ) : (
+        analysis
+      )}
     </div>
   );
 }
