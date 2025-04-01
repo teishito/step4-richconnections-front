@@ -89,7 +89,7 @@ export default function DiagnosisForm() {
 
   return (
     <form onSubmit={handleSave} className="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6" style={{ padding: "20px" }}>自己診断フォーム</h2>
+      <h2 className="text-2xl font-bold mb-6" style={{ padding: "30px" }}>自己診断フォーム</h2>
       {diagnosisStructure.map((section, i) => (
         <div key={section.title} className="mb-8">
           <h3 className="text-xl font-semibold text-indigo-600 mb-4">
