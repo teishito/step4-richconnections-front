@@ -14,7 +14,7 @@ export default function Login() {
     if (email === "user@example.com" && password === "password") {
       // 認証成功 → トークン保存（仮）→ index に遷移
       localStorage.setItem("authToken", "sample-token");
-      router.push("/"); // index.tsx に遷移
+      router.push("/dashboard"); // dashboard.js に遷移
     } else {
       alert("メールアドレスまたはパスワードが間違っています");
     }
