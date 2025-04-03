@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function Signup() {
     e.preventDefault();
 
     if (!agreed) {
-      alert("個人情報の取扱に同意してください。");
+      alert("利用規約・プライバシーポリシーに同意してください。");
       return;
     }
 
@@ -24,17 +25,18 @@ export default function Signup() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       <form
         onSubmit={handleSignup}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
+        className="bg-white border border-gray-300 p-6 rounded-lg w-full max-w-md shadow space-y-4"
       >
-        <h2 className="text-xl font-bold text-center text-gray-800">新規登録</h2>
+        <h2 className="text-lg font-bold text-center text-gray-800">新規登録</h2>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">お名前</label>
           <input
             type="text"
+            placeholder="お名前"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded bg-blue-50 text-gray-800"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
         </div>
@@ -43,9 +45,10 @@ export default function Signup() {
           <label className="block text-sm font-medium text-gray-700 mb-1">メールアドレス</label>
           <input
             type="email"
+            placeholder="メールアドレス"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded bg-blue-50 text-gray-800"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
         </div>
@@ -54,33 +57,38 @@ export default function Signup() {
           <label className="block text-sm font-medium text-gray-700 mb-1">パスワード</label>
           <input
             type="password"
+            placeholder="パスワード"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded bg-blue-50 text-gray-800"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
         </div>
 
-        {/* ✅ 同意チェック */}
-        <div className="flex items-center space-x-2 text-sm text-gray-700">
+        {/* 個人情報同意チェック */}
+        <div className="flex items-start text-sm text-gray-700 space-x-2">
           <input
             type="checkbox"
             id="agree"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            className="w-4 h-4 border-gray-300"
+            className="mt-1"
           />
-          <label htmlFor="agree" className="text-sm">
-            個人情報の取扱に同意します
+          <label htmlFor="agree">
+            <span className="text-blue-600 underline cursor-pointer">利用規約</span>・
+            <span className="text-blue-600 underline cursor-pointer">プライバシーポリシー</span>
+            に同意します
           </label>
         </div>
 
         <button
           type="submit"
-          className={`w-full ${
-            agreed ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"
-          } text-white font-semibold py-2 rounded transition`}
           disabled={!agreed}
+          className={`w-full py-2 rounded font-semibold ${
+            agreed
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-gray-300 text-gray-400 cursor-not-allowed"
+          } transition`}
         >
           登録する
         </button>
