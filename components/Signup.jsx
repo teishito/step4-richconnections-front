@@ -31,7 +31,7 @@ export default function Signup() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       <form
         onSubmit={handleSignup}
-        className="bg-white border border-gray-300 p-6 rounded-md w-full max-w-sm space-y-4 shadow"
+        className="bg-white border border-gray-300 p-6 rounded-lg w-full max-w-md shadow mb-6"
       >
         <h2 className="text-lg font-bold text-center text-gray-900">新規登録</h2>
 
