@@ -18,11 +18,11 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff8f2] px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       {/* ログインフォーム */}
       <form
         onSubmit={handleLogin}
-        className="bg-white border border-gray-300 p-6 rounded-md w-full max-w-sm mb-6"
+        className="bg-gray-100 border border-gray-300 p-6 rounded-md w-full max-w-sm mb-6"
       >
         <h2 className="text-lg font-bold text-center text-brown-800 mb-4">ログイン</h2>
 
@@ -62,7 +62,7 @@ export default function Login() {
       </form>
 
       {/* 新規登録 */}
-      <div className="bg-white border border-gray-300 p-4 rounded-md w-full max-w-sm text-center">
+      <div className="bg-gray-100 border border-gray-300 p-4 rounded-md w-full max-w-sm text-center">
         <h3 className="font-bold text-brown-800 text-md mb-1">はじめてご利用の方</h3>
         <p className="text-xs text-gray-500 mb-4">(無料アカウントの作成)</p>
         <Link href="/signup">
