@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import SearchForm from "../components/SearchForm";
+import SearchForm from "../components/Diagnosis";
 
 export default function DiagnosisPage() {
   return (
