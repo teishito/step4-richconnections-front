@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [agreed, setAgreed] = useState(false); // ← 同意状態の追加
+  const [agreed, setAgreed] = useState(false);
   const router = useRouter();
 
   const handleSignup = (e) => {
@@ -17,16 +16,15 @@ export default function Signup() {
       return;
     }
 
-    // 仮処理：ここで API 連携やバリデーションなどを実装可能
     alert("新規登録が完了しました（仮）");
-    router.push("/dashboard"); // 登録後ダッシュボードへ遷移
+    router.push("/login");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff8f2] px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       <form
         onSubmit={handleSignup}
-        className="bg-white border border-gray-300 p-6 rounded-md w-full max-w-sm space-y-4"
+        className="bg-gray-100 border border-gray-300 p-6 rounded-md w-full max-w-sm space-y-4"
       >
         <h2 className="text-lg font-bold text-center text-brown-800">新規登録</h2>
 
@@ -63,7 +61,7 @@ export default function Signup() {
           />
         </div>
 
-        {/* ✅ 個人情報同意チェック */}
+        {/* 個人情報の同意チェック */}
         <div className="flex items-center space-x-2 text-sm text-gray-700">
           <input
             type="checkbox"
