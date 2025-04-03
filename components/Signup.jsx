@@ -24,44 +24,44 @@ export default function Signup() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       <form
         onSubmit={handleSignup}
-        className="bg-gray-100 border border-gray-300 p-6 rounded-md w-full max-w-sm space-y-4"
+        className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
       >
-        <h2 className="text-lg font-bold text-center text-brown-800">新規登録</h2>
+        <h2 className="text-xl font-bold text-center text-gray-800">新規登録</h2>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">お名前</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">お名前</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-brown-300"
+            className="w-full p-2 border border-gray-300 rounded bg-blue-50 text-gray-800"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">メールアドレス</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">メールアドレス</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-brown-300"
+            className="w-full p-2 border border-gray-300 rounded bg-blue-50 text-gray-800"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">パスワード</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">パスワード</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-brown-300"
+            className="w-full p-2 border border-gray-300 rounded bg-blue-50 text-gray-800"
             required
           />
         </div>
 
-        {/* 個人情報の同意チェック */}
+        {/* ✅ 同意チェック */}
         <div className="flex items-center space-x-2 text-sm text-gray-700">
           <input
             type="checkbox"
@@ -70,16 +70,16 @@ export default function Signup() {
             onChange={(e) => setAgreed(e.target.checked)}
             className="w-4 h-4 border-gray-300"
           />
-          <label htmlFor="agree">
-            <span>個人情報の取扱に同意します</span>
+          <label htmlFor="agree" className="text-sm">
+            個人情報の取扱に同意します
           </label>
         </div>
 
         <button
           type="submit"
           className={`w-full ${
-            agreed ? "bg-[#d8c7b3] hover:bg-[#c8b7a3]" : "bg-gray-300 cursor-not-allowed"
-          } text-brown-900 font-semibold py-2 rounded transition`}
+            agreed ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"
+          } text-white font-semibold py-2 rounded transition`}
           disabled={!agreed}
         >
           登録する
