@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://tech0-gen-8-step4-richconnections-back.azurewebsites.net/api/:path*', // バックエンドのURL
+        destination: 'https://tech0-gen-8-step4-richconnections-back-dbajhyfdcnhbembb.germanywestcentral-01.azurewebsites.net/api/:path*', // バックエンドのURL
       },
     ];
   },
