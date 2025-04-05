@@ -9,30 +9,21 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
   const runAnalysis = async () => {
     setLoading(true);
     try {
-      const userAnswers = JSON.stringify(savedAnswers, null, 2);
-      const prompt = `以下は地方中小企業向けの経営診断アンケートの結果です。この内容をもとにPEST分析・4C分析・SWOT分析・STP分析・4P分析を実施し、業界トレンドを踏まえた経営戦略を提案してください。:
-
-${userAnswers}
-
-それぞれのフレームワークごとに整理して、分かりやすく箇条書きまたは表形式で出力してください。`;
-
-      const response = await openai.createChatCompletion({
-        model: "gpt-4",
-        messages: [
-          {
-            role: "system",
-            content: "あなたは地方中小企業の経営コンサルタントです。中小企業診断士の視点で分析してください。",
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        temperature: 0.7,
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ savedAnswers }),
       });
 
-      const result = response.data.choices[0].message.content;
-      setAnalysis(result);
+      const data = await response.json();
+
+      if (data.result) {
+        setAnalysis(data.result);
+      } else {
+        setAnalysis("分析に失敗しました。");
+      }
     } catch (error) {
       console.error("分析エラー:", error);
       setAnalysis("分析中にエラーが発生しました。");
