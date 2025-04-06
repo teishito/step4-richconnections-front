@@ -37,7 +37,7 @@ ${userAnswers}
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 mt-12 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6" style={{ padding: "30px" }}>経営分析結果</h2>
+      <h2 className="text-2xl font-bold mb-6" style={{ padding: "30px" }}>経営分析</h2>
       <button
         onClick={runAnalysis}
         className="mb-6 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
