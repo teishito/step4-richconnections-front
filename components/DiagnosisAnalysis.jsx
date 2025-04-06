@@ -36,6 +36,7 @@ ${userAnswers}
   };
 
   return (
+    <h2 className="text-2xl font-bold mb-6" style={{ padding: "30px" }}>自己診断に基づく経営分析結果</h2>
     <div className="max-w-4xl mx-auto bg-white p-6 mt-12 rounded shadow">
       <h2 className="text-2xl font-bold mb-6">経営分析レポート</h2>
       <button
