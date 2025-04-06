@@ -34,7 +34,7 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 mt-12 rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">経営分析レポート</h2>
+      <h2 className="text-2xl font-bold mb-6">経営分析レポート</h2>
       <button
         onClick={runAnalysis}
         className="mb-6 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
