@@ -4,6 +4,7 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
   const [analysis, setAnalysis] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // 分析実行
   const runAnalysis = async () => {
     setLoading(true);
     try {
@@ -35,9 +36,36 @@ ${userAnswers}
     }
   };
 
+  // 分析結果をセクションごとに分割
+  const parseAnalysis = (text) => {
+    const sections = {};
+    const titles = [
+      "PEST分析",
+      "4C分析",
+      "SWOT分析",
+      "STP分析",
+      "4P分析",
+      "経営戦略の提案"
+    ];
+
+    titles.forEach((title, i) => {
+      const start = text.indexOf(`### ${title}`);
+      const end = i < titles.length - 1 ? text.indexOf(`### ${titles[i + 1]}`) : text.length;
+
+      if (start !== -1 && end !== -1) {
+        sections[title] = text.slice(start + title.length + 5, end).trim(); // +5 は "### " を除去
+      }
+    });
+
+    return sections;
+  };
+
+  const parsed = parseAnalysis(analysis);
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 mt-12 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6" style={{ padding: "30px" }}>経営分析</h2>
+      <h2 className="text-2xl font-bold mb-6">経営分析</h2>
+
       <button
         onClick={runAnalysis}
         className="mb-6 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
@@ -45,9 +73,22 @@ ${userAnswers}
       >
         {loading ? "分析中..." : "AIに分析してもらう"}
       </button>
+
+      {/* 分析結果を項目ごとに表示 */}
       {analysis && (
-        <div className="whitespace-pre-wrap border-t pt-4 text-gray-800">
-          {analysis}
+        <div className="space-y-4 border-t pt-4">
+          {Object.entries(parsed).map(([title, content]) => (
+            <div key={title} className="border rounded shadow">
+              <details className="p-4">
+                <summary className="cursor-pointer text-lg font-semibold text-indigo-700">
+                  {title}
+                </summary>
+                <div className="mt-2 whitespace-pre-wrap text-gray-800">
+                  {content}
+                </div>
+              </details>
+            </div>
+          ))}
         </div>
       )}
     </div>
