@@ -49,17 +49,19 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 mt-12 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6">経営分析</h2>
-      <button
-        onClick={runAnalysis}
-        className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        disabled={loading}
-      >
-        {loading ? "分析中..." : "AIに分析してもらう"}
-      </button>
+    <div className="max-w-2xl w-full mx-auto bg-white p-6 mt-12 rounded shadow min-h-screen pb-32">
+      <h2 className="text-2xl font-bold mb-6 text-center">経営分析</h2>
+      <div className="flex justify-center">
+        <button
+          onClick={runAnalysis}
+          className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700"
+          disabled={loading}
+        >
+          {loading ? "分析中..." : "AIに分析してもらう"}
+        </button>
+      </div>
 
-      <hr className="my-4" />
+      <hr className="my-6" />
 
       {Object.entries(sections).map(([title, content]) => (
         <details key={title} className="mb-4 bg-gray-50 p-4 rounded shadow">
@@ -69,9 +71,13 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
       ))}
 
       {analysis && (
-        <div className="mt-10 mb-32 space-y-3">
-          <button className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">保存</button>
-          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">SNSキャンペーン設計へ</button>
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-2xl px-6 space-y-3">
+          <button className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            保存
+          </button>
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            SNSキャンペーン設計へ
+          </button>
         </div>
       )}
     </div>
