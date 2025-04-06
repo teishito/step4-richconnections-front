@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import { useState } from "react";
 
 export default function DiagnosisAnalysis({ savedAnswers }) {
   const [analysis, setAnalysis] = useState("");
@@ -9,17 +7,24 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
   const runAnalysis = async () => {
     setLoading(true);
     try {
+      const userAnswers = JSON.stringify(savedAnswers, null, 2);
+      const prompt = `以下は地方中小企業向けの経営診断アンケートの結果です。この内容をもとにPEST分析・4C分析・SWOT分析・STP分析・4P分析を実施し、業界トレンドを踏まえた経営戦略を提案してください:
+
+${userAnswers}
+
+それぞれのフレームワークごとに整理して、分かりやすく箇条書きまたは表形式で出力してください。`;
+
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
-  
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`サーバーエラー: ${errorText}`);
       }
-  
+
       const data = await response.json();
       setAnalysis(data.result || "分析結果が取得できませんでした。");
     } catch (error) {
