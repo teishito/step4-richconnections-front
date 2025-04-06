@@ -11,19 +11,17 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
     try {
       const response = await fetch("/api/analyze", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ savedAnswers }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
       });
-
-      const data = await response.json();
-
-      if (data.result) {
-        setAnalysis(data.result);
-      } else {
-        setAnalysis("分析に失敗しました。");
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`サーバーエラー: ${errorText}`);
       }
+  
+      const data = await response.json();
+      setAnalysis(data.result || "分析結果が取得できませんでした。");
     } catch (error) {
       console.error("分析エラー:", error);
       setAnalysis("分析中にエラーが発生しました。");
