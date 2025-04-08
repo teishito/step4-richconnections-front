@@ -73,7 +73,7 @@ export default function SNSCampaignDesigner() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 mt-12 mb-24 rounded shadow">
+    <div className="max-w-2xl mx-auto bg-white p-6 mt-12 mb-32 rounded shadow relative">
       <h2 className="text-2xl font-bold mb-6">SNSキャンペーン画像生成</h2>
 
       <button
@@ -107,11 +107,27 @@ export default function SNSCampaignDesigner() {
       )}
 
       {snsText && (
-        <div className="mt-8">
+        <div className="mt-8 mb-32">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">SNS投稿テキスト</h3>
           <div className="whitespace-pre-wrap text-sm bg-yellow-50 p-4 rounded shadow text-gray-900 leading-relaxed">
             {snsText}
           </div>
+        </div>
+      )}
+
+      {snsText && imageUrl && (
+        <div className="fixed bottom-8 left-0 w-full flex justify-center z-50">
+          <button
+            onClick={() => {
+              window.open(imageUrl, "_blank");
+              navigator.clipboard.writeText(snsText).then(() => {
+                alert("画像を開き、投稿文をコピーしました！");
+              });
+            }}
+            className="bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700"
+          >
+            画像保存＆テキストコピー
+          </button>
         </div>
       )}
     </div>
