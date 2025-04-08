@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function SNSCampaignDesigner() {
   const [analysisSummary, setAnalysisSummary] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [snsText, setSnsText] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -11,6 +12,7 @@ export default function SNSCampaignDesigner() {
     setErrorMsg("");
     setImageUrl("");
     setAnalysisSummary("");
+    setSnsText("");
 
     try {
       // 経営診断の分析要約を取得
@@ -46,6 +48,22 @@ export default function SNSCampaignDesigner() {
 
       const imageData = await imageResponse.json();
       setImageUrl(imageData.image_url);
+
+      // SNS投稿テキスト生成
+      const textResponse = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: `以下の要約をもとに、InstagramやX（旧Twitter）に投稿できる「プレゼントキャンペーン投稿文」を作成してください。ターゲットは地域の中小企業関係者です。絵文字を含め、参加を促す構成で書いてください：\n\n${summary}`,
+        }),
+      });
+
+      if (!textResponse.ok) {
+        throw new Error("SNS投稿テキストの生成に失敗しました");
+      }
+
+      const textData = await textResponse.json();
+      setSnsText(textData.result);
     } catch (error) {
       console.error("画像生成エラー:", error);
       setErrorMsg(error.message || "画像生成に失敗しました");
@@ -63,7 +81,7 @@ export default function SNSCampaignDesigner() {
         className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
         disabled={loading}
       >
-        {loading ? "生成中..." : "画像を生成する"}
+        {loading ? "生成中..." : "画像と投稿文を生成する"}
       </button>
 
       {errorMsg && <p className="mt-4 text-red-600">{errorMsg}</p>}
@@ -85,6 +103,15 @@ export default function SNSCampaignDesigner() {
             alt="SNSキャンペーン画像"
             className="w-full max-w-md mx-auto rounded shadow border"
           />
+        </div>
+      )}
+
+      {snsText && (
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">SNS投稿テキスト</h3>
+          <div className="whitespace-pre-wrap text-sm bg-yellow-50 p-4 rounded shadow text-gray-900 leading-relaxed">
+            {snsText}
+          </div>
         </div>
       )}
     </div>
