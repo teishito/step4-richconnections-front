@@ -15,7 +15,7 @@ export default function DashboardMenu() {
       <button className="w-full bg-green-500 text-white py-2 rounded" onClick={() => handleNavigate("/diagnosis-analysis")}>経営分析</button>
       <button className="w-full bg-yellow-500 text-white py-2 rounded" onClick={() => handleNavigate("/sns-campaign")}>SNSキャンペーン設計</button>
       <button className="w-full bg-purple-500 text-white py-2 rounded" onClick={() => handleNavigate("/campaign-detail")}>キャンペーン実施/詳細</button>
-      <button className="w-full bg-red-500 text-white py-2 rounded">キャンペーン実施レポート</button>
+      <button className="w-full bg-red-500 text-white py-2 rounded" onClick={() => handleNavigate("/campaign-report")}>キャンペーン実施レポート</button>
     </div>
   );
 }
