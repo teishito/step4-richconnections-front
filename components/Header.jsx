@@ -4,38 +4,27 @@ import { useRouter } from "next/router";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isPopupOpen, setPopupOpen] = useState(false);
   const router = useRouter();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handlePopupOpen = () => {
+  const handleLogout = () => {
+    // ログアウト処理（必要に応じてCookieやToken削除などを追加）
     setMenuOpen(false);
-    setPopupOpen(true);
-  };
-
-  const handlePopupClose = () => {
-    setPopupOpen(false);
-  };
-
-  const handleUnderstandClick = () => {
-    setPopupOpen(false);
-    router.push("/menus/report-details");
+    router.push("/login");
   };
 
   return (
     <header className="fixed top-0 left-0 w-full bg-black text-white py-4 z-50 shadow-md">
       <div className="flex justify-between items-center px-6">
-        {/* ロゴ */}
         <Link href="/">
           <h1 className="text-xl font-bold cursor-pointer" aria-label="Home">
             Richness
           </h1>
         </Link>
 
-        {/* ハンバーガーメニュー */}
         <button
           className="text-white focus:outline-none"
           onClick={toggleMenu}
@@ -49,63 +38,53 @@ export default function Header() {
         </button>
       </div>
 
-      {/* メニュー */}
       {menuOpen && (
-        <div className="absolute top-14 right-4 bg-white shadow-lg rounded-md p-4 z-50">
-          <ul>
-            <li className="mb-2">
-              <Link href="/menus/reservation-history" className="text-black hover:text-blue-600">
-                予約履歴
+        <div className="absolute top-14 right-4 bg-white shadow-lg rounded-md p-4 z-50 w-56">
+          <ul className="text-center space-y-3 text-sm">
+            <li>
+              <Link href="/diagnosis">
+                <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                  自己診断
+                </button>
               </Link>
             </li>
-            <li className="mb-2">
-              <Link href="/menus/favorites" className="text-black hover:text-blue-600">
-                お気に入り
+            <li>
+              <Link href="/diagnosis-analysis">
+                <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
+                  経営分析
+                </button>
               </Link>
             </li>
-            <li className="mb-2">
+            <li>
+              <Link href="/sns-campaign">
+                <button className="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">
+                  SNSキャンペーン設計
+                </button>
+              </Link>
+            </li>
+            <li>
+              <Link href="/campaign-detail">
+                <button className="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600">
+                  キャンペーン実施/詳細
+                </button>
+              </Link>
+            </li>
+            <li>
+              <Link href="/campaign-report">
+                <button className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">
+                  キャンペーン実施レポート
+                </button>
+              </Link>
+            </li>
+            <li className="border-t pt-3 mt-3">
               <button
-                onClick={handlePopupOpen}
-                className="text-black hover:text-blue-600"
-                aria-label="Open Report Popup"
+                onClick={handleLogout}
+                className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700"
               >
-                レポート
+                ログアウト
               </button>
             </li>
           </ul>
-        </div>
-      )}
-
-      {/* ポップアップ */}
-      {isPopupOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-          onClick={handlePopupClose}
-        >
-          <div
-            className="bg-white p-6 rounded-lg shadow-lg relative max-w-sm w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={handlePopupClose}
-              className="absolute top-2 right-2 text-black"
-              aria-label="Close Popup"
-            >
-              ×
-            </button>
-            <h2 className="text-lg font-bold mb-4">レポートとは？</h2>
-            <ul className="mb-4 text-sm text-gray-700">
-              <li>・あなたの会食をより最適化するためのレポートをします</li>
-              <li>・会食後のフィードバックに基づき、次回以降のお店提案を改善します</li>
-            </ul>
-            <button
-              onClick={handleUnderstandClick}
-              className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800"
-              aria-label="Understand and Proceed"
-            >
-              了解
-            </button>
-          </div>
         </div>
       )}
     </header>
