@@ -10,7 +10,7 @@ export default function Signup() {
   const [agreed, setAgreed] = useState(false);
   const router = useRouter();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     if (!agreed) {
@@ -23,8 +23,31 @@ export default function Signup() {
       return;
     }
 
-    alert("新規登録が完了しました");
-    router.push("/login");
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("新規登録が完了しました");
+        router.push("/login");
+      } else {
+        alert(`登録に失敗しました: ${data.message || "サーバーエラー"}`);
+      }
+    } catch (err) {
+      console.error("登録中エラー:", err);
+      alert("通信エラーが発生しました。ネットワークをご確認ください。");
+    }
   };
 
   return (
@@ -59,7 +82,7 @@ export default function Signup() {
           />
         </div>
 
-        <div className="mb-4 relative">
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">パスワード</label>
           <input
             type="password"
@@ -71,7 +94,7 @@ export default function Signup() {
           />
         </div>
 
-        <div className="mb-4 relative">
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">パスワード（再確認）</label>
           <input
             type="password"
