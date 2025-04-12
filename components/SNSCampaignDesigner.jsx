@@ -116,7 +116,7 @@ export default function SNSCampaignDesigner() {
       )}
 
       {snsText && imageUrl && (
-        <div className="fixed bottom-8 left-0 w-full flex justify-center z-50">
+        <div className="fixed bottom-20 left-0 w-full flex justify-center z-50">
           <button
             onClick={() => {
               window.open(imageUrl, "_blank");
