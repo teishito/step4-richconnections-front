@@ -10,12 +10,34 @@ export default function DashboardMenu() {
   };
 
   return (
-    <div className="space-y-4 w-full max-w-md mt-12">
-      <button className="w-full bg-blue-500 text-white py-2 rounded" onClick={() => handleNavigate("/diagnosis")}>自己診断</button>
-      <button className="w-full bg-green-500 text-white py-2 rounded" onClick={() => handleNavigate("/diagnosis-analysis")}>経営分析</button>
-      <button className="w-full bg-yellow-500 text-white py-2 rounded" onClick={() => handleNavigate("/sns-campaign")}>SNSキャンペーン設計</button>
-      <button className="w-full bg-purple-500 text-white py-2 rounded" onClick={() => handleNavigate("/campaign-detail")}>キャンペーン実施/詳細</button>
-      <button className="w-full bg-red-500 text-white py-2 rounded" onClick={() => handleNavigate("/campaign-report")}>キャンペーン実施レポート</button>
+    <div className="space-y-2 text-center mt-12">
+      <Link href="/diagnosis">
+        <button className="w-full bg-blue-500 text-white py-2 rounded-lg">自己診断</button>
+      </Link>
+    
+      <div className="text-gray-400 text-xl">▼</div>
+    
+      <Link href="/diagnosis-analysis">
+        <button className="w-full bg-green-500 text-white py-2 rounded-lg">経営分析</button>
+      </Link>
+    
+      <div className="text-gray-400 text-xl">▼</div>
+    
+      <Link href="/sns-campaign">
+        <button className="w-full bg-yellow-500 text-white py-2 rounded-lg">SNSキャンペーン設計</button>
+      </Link>
+    
+      <div className="text-gray-400 text-xl">▼</div>
+    
+      <Link href="/campaign-detail">
+        <button className="w-full bg-purple-500 text-white py-2 rounded-lg">キャンペーン実施/詳細</button>
+      </Link>
+    
+      <div className="text-gray-400 text-xl">▼</div>
+    
+      <Link href="/campaign-report">
+        <button className="w-full bg-red-500 text-white py-2 rounded-lg">キャンペーン実施レポート</button>
+      </Link>
     </div>
   );
 }
