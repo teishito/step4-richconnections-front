@@ -73,7 +73,7 @@ export default function SNSCampaignDesigner() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 mt-12 mb-32 rounded shadow relative">
+    <div className="max-w-2xl mx-auto bg-white p-6 mt-12 mb-32 pb-24 rounded shadow relative">
       <h2 className="text-2xl font-bold mb-6">SNSキャンペーン画像生成</h2>
 
       <button
@@ -116,7 +116,7 @@ export default function SNSCampaignDesigner() {
       )}
 
       {snsText && imageUrl && (
-        <div className="fixed bottom-20 left-0 w-full flex justify-center z-50">
+        <div className="mt-10 flex justify-center">
           <button
             onClick={() => {
               window.open(imageUrl, "_blank");
