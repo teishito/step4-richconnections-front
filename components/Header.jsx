@@ -17,14 +17,14 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-black text-white py-4 z-50 shadow-md">
+    <header className="fixed top-0 left-0 w-full bg-[#5B7F6F] text-white py-4 z-50 shadow-md">
       <div className="flex justify-between items-center px-6">
         <Link href="/">
           <h1 className="text-xl font-bold cursor-pointer" aria-label="Home">
             Richness
           </h1>
         </Link>
-
+    
         <button
           className="text-white focus:outline-none"
           onClick={toggleMenu}
