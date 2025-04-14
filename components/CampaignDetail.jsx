@@ -47,7 +47,7 @@ export default function CampaignDetail() {
         />
         <button
           onClick={fetchPostData}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          className="bg-[#5B7F6F] text-white px-4 py-2 rounded hover:bg-indigo-700"
           disabled={loading}
         >
           {loading ? "取得中..." : "投稿情報を取得"}
