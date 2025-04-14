@@ -65,7 +65,7 @@ export default function Signup() {
             placeholder="お名前"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5B7F6F]"
             required
           />
         </div>
@@ -77,7 +77,7 @@ export default function Signup() {
             placeholder="メールアドレス"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5B7F6F]"
             required
           />
         </div>
@@ -89,7 +89,7 @@ export default function Signup() {
             placeholder="パスワード"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5B7F6F]"
             required
           />
         </div>
@@ -101,7 +101,7 @@ export default function Signup() {
             placeholder="パスワード（再確認）"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5B7F6F]"
             required
           />
         </div>
@@ -115,8 +115,8 @@ export default function Signup() {
             className="mt-1"
           />
           <label htmlFor="agree" className="leading-tight">
-            <span className="text-blue-600 underline cursor-pointer">利用規約</span>・
-            <span className="text-blue-600 underline cursor-pointer">プライバシーポリシー</span>
+            <span className="text-[#5B7F6F] underline cursor-pointer">利用規約</span>・
+            <span className="text-[#5B7F6F] underline cursor-pointer">プライバシーポリシー</span>
             に同意します
           </label>
         </div>
@@ -124,11 +124,11 @@ export default function Signup() {
         <button
           type="submit"
           disabled={!agreed}
-          className={`w-full py-2 rounded font-semibold ${
+          className={`w-full py-2 rounded font-semibold transition ${
             agreed
-              ? "bg-blue-600 text-white hover:bg-blue-700"
+              ? "bg-[#5B7F6F] text-white hover:opacity-90"
               : "bg-gray-300 text-gray-400 cursor-not-allowed"
-          } transition`}
+          }`}
         >
           登録する
         </button>
