@@ -12,54 +12,37 @@ const diagnosisStructure = [
   {
     title: "1. 店舗のコンセプト・独自性",
     questions: [
-      { q: "店舗のコンセプトやサービスに独自性があり、お客様にも伝わっていると感じますか？",
-        type: "scale5",
-      },
+      { q: "店舗のコンセプトやサービスに独自性があり、お客様にも伝わっていると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "2. お客様の視点を理解する",
     questions: [
-      {
-        q: "お客様のニーズや期待を理解し、フィードバックを活かせていると感じますか？",
-        type: "scale5",
-      },
+      { q: "お客様のニーズや期待を理解し、フィードバックを活かせていると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "3. 競争優位性を見極める",
     questions: [
-      {
-        q: "競合店舗と比べて、自店には強みや優位性があると感じますか？",
-        type: "scale5",
-      },
+      { q: "競合店舗と比べて、自店には強みや優位性があると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "4. マーケティング・集客",
     questions: [
-      {
-        q: "SNSや広告などの施策が効果的に活用され、集客につながっていると感じますか？",
-        type: "scale5",
-      },
+      { q: "SNSや広告などの施策が効果的に活用され、集客につながっていると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "5. メニューの魅力",
     questions: [
-      {
-        q: "価格や内容を含めたメニュー全体に対して、お客様の満足度は高いと感じますか？",
-        type: "scale5",
-      },
+      { q: "価格や内容を含めたメニュー全体に対して、お客様の満足度は高いと感じますか？", type: "scale5" },
     ],
   },
   {
     title: "6. サービスの質",
     questions: [
-      {
-        q: "提供スピードや接客態度を含めたサービス全体の質は高いと感じますか？",
-        type: "scale5",
-      },
+      { q: "提供スピードや接客態度を含めたサービス全体の質は高いと感じますか？", type: "scale5" },
     ],
   },
 ];
@@ -79,6 +62,7 @@ export default function SNSCampaignDesigner() {
   });
 
   const [analysisSummary, setAnalysisSummary] = useState("");
+  const [shortSummary, setShortSummary] = useState("");
   const [snsText, setSnsText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -90,39 +74,52 @@ export default function SNSCampaignDesigner() {
     setAnalysisSummary("");
     setSnsText("");
     setImageUrl("");
+    setShortSummary("");
 
     try {
+      // ステップ1：経営分析
       const prompt = `以下は商材「${productText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これを元に、PEST分析、4C分析、SWOT分析、STP分析、4P分析、さらにSNSキャンペーン設計まで行ってください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
-
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
-
       const data = await res.json();
       const summary = data.result;
       setAnalysisSummary(summary);
 
+      // ステップ2：画像生成用要約
+      const shortSummaryRes = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: `以下の分析内容を、SNSキャンペーン用画像に適した要約として100文字以内で1文で表現してください：\n\n${summary}`,
+        }),
+      });
+      const shortData = await shortSummaryRes.json();
+      const short = shortData.result.trim();
+      setShortSummary(short);
+
+      // ステップ3：画像生成
+      const imgRes = await fetch("/api/generate-campaign-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ analysis_summary: short }),
+      });
+      const imgData = await imgRes.json();
+      setImageUrl(imgData.image_url);
+
+      // ステップ4：SNS投稿文生成
       const snsRes = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: `以下の要約に基づき、InstagramやXで投稿できるキャンペーン文章を作成してください。ターゲットは中小企業の経営者です。絵文字を含め、参加を促す構成にしてください：\n\n${summary}`,
+          prompt: `以下の要約に基づき、InstagramやXで投稿できるキャンペーン文章を作成してください。ターゲットは中小企業の経営者です。絵文字を含め、参加を促す構成にしてください：\n\n${short}`,
         }),
       });
-
       const snsData = await snsRes.json();
       setSnsText(snsData.result);
 
-      const imgRes = await fetch("/api/generate-campaign-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ analysis_summary: summary }),
-      });
-
-      const imgData = await imgRes.json();
-      setImageUrl(imgData.image_url);
     } catch (err) {
       console.error("生成エラー:", err);
       setErrorMsg("生成に失敗しました。");
@@ -165,8 +162,15 @@ export default function SNSCampaignDesigner() {
         </div>
       )}
 
+      {shortSummary && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">画像生成用 要約</h3>
+          <p className="bg-gray-50 p-3 rounded border text-sm text-gray-700">{shortSummary}</p>
+        </div>
+      )}
+
       {snsText && (
-        <div className="mt-8">
+        <div className="mt-6">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">SNS投稿テキスト</h3>
           <div className="bg-yellow-50 p-4 rounded shadow text-gray-900 text-sm whitespace-pre-wrap">
             {snsText}
