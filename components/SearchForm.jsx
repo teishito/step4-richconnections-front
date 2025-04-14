@@ -81,19 +81,18 @@ export default function DiagnosisForm() {
     alert("診断内容が保存されました！（仮）");
   };
 
-  const handleAnalyze = () => {
-    console.log("分析を実行:", answers);
-    router.push("/diagnosis-analysis");
-  };
-
   return (
-    <form onSubmit={handleSave} className="max-w-3xl mx-auto bg-white p-6 pb-24 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6" style={{ padding: "30px" }}>
+    <form
+      onSubmit={handleSave}
+      className="max-w-3xl mx-auto bg-white p-6 pb-24 rounded shadow"
+    >
+      <h2 className="text-2xl font-bold mb-6 text-center text-[#5B7F6F]">
         自己診断フォーム
       </h2>
+
       {diagnosisStructure.map((section, i) => (
         <div key={section.title} className="mb-8">
-          <h3 className="text-xl font-semibold text-indigo-600 mb-4">
+          <h3 className="text-xl font-semibold text-[#5B7F6F] mb-4">
             {section.title}
           </h3>
           {section.questions.map((q, qi) => {
@@ -122,15 +121,15 @@ export default function DiagnosisForm() {
       <div className="flex flex-col gap-4">
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+          className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90"
         >
           保存する
         </button>
-      
+
         <Link href="/diagnosis-analysis" className="w-full">
           <button
             type="button"
-            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
+            className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90"
           >
             経営分析へ
           </button>
