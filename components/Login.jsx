@@ -40,7 +40,7 @@ export default function Login() {
             placeholder="メールアドレス / ログインID"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5B7F6F]"
             required
           />
         </div>
@@ -52,7 +52,7 @@ export default function Login() {
             placeholder="パスワード"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5B7F6F]"
             required
           />
         </div>
@@ -67,8 +67,8 @@ export default function Login() {
             className="mt-1"
           />
           <label htmlFor="agree" className="leading-tight">
-            <span className="text-blue-600 underline cursor-pointer">利用規約</span>・
-            <span className="text-blue-600 underline cursor-pointer">プライバシーポリシー</span>
+            <span className="text-[#5B7F6F] underline cursor-pointer">利用規約</span>・
+            <span className="text-[#5B7F6F] underline cursor-pointer">プライバシーポリシー</span>
             に同意の上ログインしてください
           </label>
         </div>
@@ -76,11 +76,11 @@ export default function Login() {
         <button
           type="submit"
           disabled={!agreed}
-          className={`w-full py-2 rounded font-semibold ${
+          className={`w-full py-2 rounded font-semibold transition ${
             agreed
-              ? "bg-blue-600 text-white hover:bg-blue-700"
+              ? "bg-[#5B7F6F] text-white hover:opacity-90"
               : "bg-gray-300 text-gray-400 cursor-not-allowed"
-          } transition`}
+          }`}
         >
           ログイン
         </button>
@@ -91,7 +91,7 @@ export default function Login() {
         <h3 className="font-semibold text-gray-800 text-md mb-1">はじめてご利用の方</h3>
         <p className="text-xs text-gray-500 mb-4">(無料アカウントの作成)</p>
         <Link href="/signup">
-          <button className="w-full bg-blue-100 text-blue-700 font-semibold py-2 rounded hover:bg-blue-200 transition">
+          <button className="w-full bg-[#E6F0EC] text-[#5B7F6F] font-semibold py-2 rounded hover:opacity-90 transition">
             新規登録
           </button>
         </Link>
