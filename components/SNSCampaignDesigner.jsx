@@ -15,7 +15,6 @@ export default function SNSCampaignDesigner() {
     setSnsText("");
 
     try {
-      // 経営診断の分析要約を取得
       const diagnosisResponse = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,7 +33,6 @@ export default function SNSCampaignDesigner() {
       const summary = diagnosisData.result;
       setAnalysisSummary(summary);
 
-      // 画像生成APIへ要約を送信
       const imageResponse = await fetch("/api/generate-campaign-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -49,7 +47,6 @@ export default function SNSCampaignDesigner() {
       const imageData = await imageResponse.json();
       setImageUrl(imageData.image_url);
 
-      // SNS投稿テキスト生成
       const textResponse = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,11 +71,13 @@ export default function SNSCampaignDesigner() {
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 mt-12 mb-32 pb-24 rounded shadow relative">
-      <h2 className="text-2xl font-bold mb-6">SNSキャンペーン画像生成</h2>
+      <h2 className="text-2xl font-bold mb-6 text-[#5B7F6F]">
+        SNSキャンペーン画像生成
+      </h2>
 
       <button
         onClick={generateImage}
-        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+        className="bg-[#5B7F6F] text-white px-6 py-2 rounded hover:opacity-90"
         disabled={loading}
       >
         {loading ? "生成中..." : "画像と投稿文を生成する"}
@@ -124,7 +123,7 @@ export default function SNSCampaignDesigner() {
                 alert("画像を開き、投稿文をコピーしました！");
               });
             }}
-            className="bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700"
+            className="bg-[#5B7F6F] text-white px-6 py-3 rounded shadow hover:opacity-90"
           >
             画像保存＆テキストコピー
           </button>
