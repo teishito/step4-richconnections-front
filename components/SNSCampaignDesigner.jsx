@@ -12,37 +12,55 @@ const diagnosisStructure = [
   {
     title: "1. 店舗のコンセプト・独自性",
     questions: [
-      { q: "店舗のコンセプトやサービスに独自性があり、お客様にも伝わっていると感じますか？", type: "scale5" },
+      {
+        q: "店舗のコンセプトやサービスに独自性があり、お客様にも伝わっていると感じますか？",
+        type: "scale5",
+      },
     ],
   },
   {
     title: "2. お客様の視点を理解する",
     questions: [
-      { q: "お客様のニーズや期待を理解し、フィードバックを活かせていると感じますか？", type: "scale5" },
+      {
+        q: "お客様のニーズや期待を理解し、フィードバックを活かせていると感じますか？",
+        type: "scale5",
+      },
     ],
   },
   {
     title: "3. 競争優位性を見極める",
     questions: [
-      { q: "競合店舗と比べて、自店には強みや優位性があると感じますか？", type: "scale5" },
+      {
+        q: "競合店舗と比べて、自店には強みや優位性があると感じますか？",
+        type: "scale5",
+      },
     ],
   },
   {
     title: "4. マーケティング・集客",
     questions: [
-      { q: "SNSや広告などの施策が効果的に活用され、集客につながっていると感じますか？", type: "scale5" },
+      {
+        q: "SNSや広告などの施策が効果的に活用され、集客につながっていると感じますか？",
+        type: "scale5",
+      },
     ],
   },
   {
     title: "5. メニューの魅力",
     questions: [
-      { q: "価格や内容を含めたメニュー全体に対して、お客様の満足度は高いと感じますか？", type: "scale5" },
+      {
+        q: "価格や内容を含めたメニュー全体に対して、お客様の満足度は高いと感じますか？",
+        type: "scale5",
+      },
     ],
   },
   {
     title: "6. サービスの質",
     questions: [
-      { q: "提供スピードや接客態度を含めたサービス全体の質は高いと感じますか？", type: "scale5" },
+      {
+        q: "提供スピードや接客態度を含めたサービス全体の質は高いと感じますか？",
+        type: "scale5",
+      },
     ],
   },
 ];
@@ -77,7 +95,7 @@ export default function SNSCampaignDesigner() {
     setShortSummary("");
 
     try {
-      // ステップ1：経営分析
+      // 経営分析
       const prompt = `以下は商材「${productText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これを元に、PEST分析、4C分析、SWOT分析、STP分析、4P分析、さらにSNSキャンペーン設計まで行ってください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -88,7 +106,7 @@ export default function SNSCampaignDesigner() {
       const summary = data.result;
       setAnalysisSummary(summary);
 
-      // ステップ2：画像生成用要約
+      // 要約生成（画像用）
       const shortSummaryRes = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,7 +118,7 @@ export default function SNSCampaignDesigner() {
       const short = shortData.result.trim();
       setShortSummary(short);
 
-      // ステップ3：画像生成
+      // 画像生成（先）
       const imgRes = await fetch("/api/generate-campaign-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -109,7 +127,7 @@ export default function SNSCampaignDesigner() {
       const imgData = await imgRes.json();
       setImageUrl(imgData.image_url);
 
-      // ステップ4：SNS投稿文生成
+      // 投稿文生成（後）
       const snsRes = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -181,7 +199,27 @@ export default function SNSCampaignDesigner() {
       {imageUrl && (
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">生成されたキャンペーン画像</h3>
-          <img src={imageUrl} alt="キャンペーン画像" className="w-full max-w-md mx-auto rounded shadow border" />
+          <img
+            src={imageUrl}
+            alt="キャンペーン画像"
+            className="w-full max-w-md mx-auto rounded shadow border"
+          />
+        </div>
+      )}
+
+      {snsText && imageUrl && (
+        <div className="mt-10 flex justify-center">
+          <button
+            onClick={() => {
+              window.open(imageUrl, "_blank");
+              navigator.clipboard.writeText(snsText).then(() => {
+                alert("画像を開き、投稿文をコピーしました！");
+              });
+            }}
+            className="bg-[#5B7F6F] text-white px-6 py-3 rounded shadow hover:opacity-90"
+          >
+            画像保存＆テキストコピー
+          </button>
         </div>
       )}
     </div>
