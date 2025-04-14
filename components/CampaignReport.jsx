@@ -1,64 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CampaignReport() {
-  const [postUrl, setPostUrl] = useState("");
   const [reportData, setReportData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
 
-  const fetchReport = async () => {
-    setLoading(true);
-    setErrorMsg("");
-    setReportData(null);
-
-    try {
-      const res = await fetch("/api/campaign-report", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: postUrl }),
-      });
-
-      if (!res.ok) {
-        const error = await res.text();
-        throw new Error(`取得失敗: ${error}`);
-      }
-
-      const data = await res.json();
-      setReportData(data);
-    } catch (err) {
-      console.error(err);
-      setErrorMsg(err.message || "レポート取得に失敗しました");
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    fetch("/api/dummy-campaign-report")
+      .then(res => res.json())
+      .then(setReportData)
+      .catch(err => console.error("ダミーデータの取得に失敗:", err));
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded shadow mb-20">
-      <h2 className="text-2xl font-bold mb-4">キャンペーン実施レポート</h2>
+      <h2 className="text-2xl font-bold mb-6 text-[#5B7F6F]">キャンペーン実施レポート</h2>
 
-      <input
-        type="text"
-        value={postUrl}
-        onChange={(e) => setPostUrl(e.target.value)}
-        placeholder="https://www.instagram.com/p/..."
-        className="w-full p-2 border rounded mb-4"
-      />
-      <button
-        onClick={fetchReport}
-        className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        disabled={loading}
-      >
-        {loading ? "分析中..." : "レポートを取得"}
-      </button>
-
-      {errorMsg && <p className="mt-4 text-red-600">{errorMsg}</p>}
-
-      {reportData && (
-        <div className="mt-6 space-y-8">
+      {reportData ? (
+        <div className="space-y-10">
           {["likes", "comments", "engagement"].map((type) => (
             <div key={type}>
-              <h3 className="text-xl font-semibold mb-2">
+              <h3 className="text-xl font-semibold text-[#5B7F6F] mb-2">
                 {type === "likes"
                   ? "いいね数ランキング"
                   : type === "comments"
@@ -66,7 +26,7 @@ export default function CampaignReport() {
                   : "エンゲージメント率ランキング"}
               </h3>
               <table className="w-full text-sm border">
-                <thead className="bg-gray-100">
+                <thead className="bg-[#E6F0EC] text-[#5B7F6F]">
                   <tr>
                     <th className="p-2">Rank</th>
                     <th className="p-2">User</th>
@@ -74,11 +34,15 @@ export default function CampaignReport() {
                   </tr>
                 </thead>
                 <tbody>
-                  {reportData[type].ranking.map((entry, index) => (
+                  {reportData[type].ranking.slice(0, 10).map((entry, index) => (
                     <tr key={entry.user} className="border-t">
                       <td className="p-2 text-center">#{index + 1}</td>
                       <td className="p-2">{entry.user}</td>
-                      <td className="p-2 text-right">{entry.value}</td>
+                      <td className="p-2 text-right">
+                        {type === "engagement"
+                          ? `${entry.value.toFixed(2)}%`
+                          : entry.value.toLocaleString()}
+                      </td>
                     </tr>
                   ))}
                   <tr className="border-t bg-gray-50 font-semibold">
@@ -86,7 +50,9 @@ export default function CampaignReport() {
                       総計:
                     </td>
                     <td className="p-2 text-right">
-                      {reportData[type].total}
+                      {type === "engagement"
+                        ? `${reportData[type].total.toFixed(2)}%`
+                        : reportData[type].total.toLocaleString()}
                     </td>
                   </tr>
                   <tr className="border-t bg-gray-50 font-semibold">
@@ -94,7 +60,9 @@ export default function CampaignReport() {
                       平均:
                     </td>
                     <td className="p-2 text-right">
-                      {reportData[type].average}
+                      {type === "engagement"
+                        ? `${reportData[type].average.toFixed(2)}%`
+                        : reportData[type].average.toLocaleString()}
                     </td>
                   </tr>
                 </tbody>
@@ -102,6 +70,8 @@ export default function CampaignReport() {
             </div>
           ))}
         </div>
+      ) : (
+        <p className="text-gray-500">読み込み中...</p>
       )}
     </div>
   );
