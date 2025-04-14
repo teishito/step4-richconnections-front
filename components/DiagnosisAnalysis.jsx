@@ -50,11 +50,12 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
 
   return (
     <div className="max-w-2xl w-full mx-auto bg-white p-6 mt-12 rounded shadow min-h-screen pb-32">
-      <h2 className="text-2xl font-bold mb-6 text-center">経営分析</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center text-[#5B7F6F]">経営分析</h2>
+
       <div className="flex justify-center">
         <button
           onClick={runAnalysis}
-          className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700"
+          className="bg-[#5B7F6F] text-white px-6 py-2 rounded hover:opacity-90"
           disabled={loading}
         >
           {loading ? "分析中..." : "AIに分析してもらう"}
@@ -65,17 +66,17 @@ export default function DiagnosisAnalysis({ savedAnswers }) {
 
       {Object.entries(sections).map(([title, content]) => (
         <details key={title} className="mb-4 bg-gray-50 p-4 rounded shadow">
-          <summary className="cursor-pointer text-indigo-700 font-semibold">{title}</summary>
+          <summary className="cursor-pointer text-[#5B7F6F] font-semibold">{title}</summary>
           <pre className="mt-2 whitespace-pre-wrap text-gray-800">{content}</pre>
         </details>
       ))}
 
       {analysis && (
         <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-2xl px-6 space-y-3">
-          <button className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+          <button className="w-full bg-[#5B7F6F] text-white px-4 py-2 rounded hover:opacity-90">
             保存
           </button>
-          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <button className="w-full bg-[#5B7F6F] text-white px-4 py-2 rounded hover:opacity-90">
             SNSキャンペーン設計へ
           </button>
         </div>
