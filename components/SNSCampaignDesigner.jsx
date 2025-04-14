@@ -80,6 +80,7 @@ export default function SNSCampaignDesigner() {
   });
 
   const [analysisSummary, setAnalysisSummary] = useState("");
+  const [analysisSections, setAnalysisSections] = useState({});
   const [shortSummary, setShortSummary] = useState("");
   const [snsText, setSnsText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -90,13 +91,14 @@ export default function SNSCampaignDesigner() {
     setLoading(true);
     setErrorMsg("");
     setAnalysisSummary("");
+    setAnalysisSections({});
     setSnsText("");
     setImageUrl("");
     setShortSummary("");
 
     try {
       // 経営分析
-      const prompt = `以下は商材「${productText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これを元に、PEST分析、4C分析、SWOT分析、STP分析、4P分析、さらにSNSキャンペーン設計まで行ってください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
+      const prompt = `以下は商材「${productText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これを元に、PEST分析、4C分析、SWOT分析、STP分析、4P分析、さらにSNSキャンペーンの提案まで行ってください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,6 +107,28 @@ export default function SNSCampaignDesigner() {
       const data = await res.json();
       const summary = data.result;
       setAnalysisSummary(summary);
+
+      // セクションごとに分割
+      const titles = [
+        "PEST分析",
+        "4C分析",
+        "SWOT分析",
+        "STP分析",
+        "4P分析",
+        "SNSキャンペーンの提案",
+      ];
+      const newSections = {};
+      let current = null;
+      summary.split("\n").forEach((line) => {
+        const found = titles.find((title) => line.includes(title));
+        if (found) {
+          current = found;
+          newSections[current] = "";
+        } else if (current) {
+          newSections[current] += line + "\n";
+        }
+      });
+      setAnalysisSections(newSections);
 
       // 要約生成（画像用）
       const shortSummaryRes = await fetch("/api/analyze", {
@@ -137,7 +161,6 @@ export default function SNSCampaignDesigner() {
       });
       const snsData = await snsRes.json();
       setSnsText(snsData.result);
-
     } catch (err) {
       console.error("生成エラー:", err);
       setErrorMsg("生成に失敗しました。");
@@ -171,19 +194,17 @@ export default function SNSCampaignDesigner() {
 
       {errorMsg && <p className="text-red-600 mt-4">{errorMsg}</p>}
 
-      {analysisSummary && (
+      {Object.keys(analysisSections).length > 0 && (
         <div className="mt-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">経営分析サマリー</h3>
-          <pre className="bg-gray-100 p-4 rounded text-sm whitespace-pre-wrap text-gray-800">
-            {analysisSummary}
-          </pre>
-        </div>
-      )}
-
-      {shortSummary && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">画像生成用 要約</h3>
-          <p className="bg-gray-50 p-3 rounded border text-sm text-gray-700">{shortSummary}</p>
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">経営分析結果は以下の通りです：</h3>
+          {Object.entries(analysisSections).map(([title, content]) => (
+            <details key={title} className="mb-4 bg-gray-50 p-4 rounded shadow">
+              <summary className="cursor-pointer text-[#5B7F6F] font-semibold">
+                {title}
+              </summary>
+              <pre className="mt-2 whitespace-pre-wrap text-gray-800">{content}</pre>
+            </details>
+          ))}
         </div>
       )}
 
