@@ -75,7 +75,10 @@ export default function SNSCampaignDesigner() {
     setImageUrl("");
 
     try {
-      const prompt = `以下は商材「${productText}」および業種「${industryText}」に関する百戦錬磨された地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これをもとに、PEST分析、4C分析、SWOT分析、STP分析、4P分析、さらにSNSキャンペーンの提案を行ってください。フレームワークごとに見出しをつけて構造的に出力してください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
+      const prompt = `以下は商材「${productText}」および業種「${industryText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これをもとに、各フレームワークごとに要点を簡潔にまとめた分析（PEST分析、4C分析、SWOT分析、STP分析、4P分析）とSNSキャンペーンの提案を行ってください。各見出しをつけて出力してください。
+
+診断回答:
+${JSON.stringify(answers, null, 2)}`;
 
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -86,7 +89,6 @@ export default function SNSCampaignDesigner() {
       const data = await res.json();
       const summary = data.result;
 
-      // 分割処理
       const sectionMap = {};
       const titles = ["PEST分析", "4C分析", "SWOT分析", "STP分析", "4P分析", "SNSキャンペーンの提案"];
       let current = null;
@@ -101,8 +103,24 @@ export default function SNSCampaignDesigner() {
       });
       setSections(sectionMap);
 
-      // 🖼 画像生成（要約を画像プロンプトに）
-      const imagePrompt = `以下は「${industryText}」の経営診断に基づいたSNSキャンペーンの要約結果です。この内容をもとに、百戦錬磨の優秀なクリエイティブディレクターとして、Instagramに投稿する「${industryText}向けのプレゼントキャンペーン画像」を生成してください。\n\n【目的】\n${industryText}のInstagramキャンペーン告知画像の生成\n\n【画像構成】\n- 商品やサービスの魅力が視覚的に伝わる要素（例: ${productText} を使用）\n- フォロー＆いいねで参加できるという構図（アイコン含む）\n- 正方形レイアウト、明るく映えるデザイン\n\n【デザイントーン】\n- ブランドや業種に合った色味とトーンで構成\n\n【要約】\n${summary}`;
+      const imagePrompt = `以下は「${industryText}」の経営診断に基づいたSNSキャンペーンの要約結果です。この内容をもとに、Instagramに投稿する「${industryText}向けのプレゼントキャンペーン画像」を生成してください。
+
+【目的】
+${industryText}のInstagramキャンペーン告知画像の生成
+
+【画像作成者】
+百戦錬磨された広告代理店のクリエイティブディレクター
+
+【画像構成】
+- 商品やサービスの魅力が視覚的に伝わる要素（例: ${productText} を使用）
+- フォロー＆いいねで参加できるという構図
+- 正方形レイアウト、明るく映えるデザイン
+
+【デザイントーン】
+- ブランドや業種に合った色味とトーンで構成
+
+【要約】
+${summary}`;
 
       const imgRes = await fetch("/api/generate-campaign-image", {
         method: "POST",
@@ -112,12 +130,11 @@ export default function SNSCampaignDesigner() {
       const imgData = await imgRes.json();
       setImageUrl(imgData.image_url);
 
-      // ✍ 投稿文生成（画像生成後に）
       const snsRes = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: `以下の要約に基づき、InstagramやXで投稿できるキャンペーン文章を作成してください。ターゲットは中小企業の経営者です。絵文字を含め、参加を促す構成にしてください：\n\n${summary}`,
+          prompt: `以下の要約に基づき、百戦錬磨された広告代理店のコピーライターとして、InstagramやXで投稿できるキャンペーン文章を作成してください。ターゲットは中小企業の経営者です。絵文字を含め、参加を促す構成にしてください：\n\n${summary}`,
         }),
       });
       const snsData = await snsRes.json();
