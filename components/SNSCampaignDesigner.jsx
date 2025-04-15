@@ -12,76 +12,56 @@ const diagnosisStructure = [
   {
     title: "1. 店舗のコンセプト・独自性",
     questions: [
-      {
-        q: "店舗のコンセプトやサービスに独自性があり、お客様にも伝わっていると感じますか？",
-        type: "scale5",
-      },
+      { q: "店舗のコンセプトやサービスに独自性があり、お客様にも伝わっていると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "2. お客様の視点を理解する",
     questions: [
-      {
-        q: "お客様のニーズや期待を理解し、フィードバックを活かせていると感じますか？",
-        type: "scale5",
-      },
+      { q: "お客様のニーズや期待を理解し、フィードバックを活かせていると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "3. 競争優位性を見極める",
     questions: [
-      {
-        q: "競合店舗と比べて、自店には強みや優位性があると感じますか？",
-        type: "scale5",
-      },
+      { q: "競合店舗と比べて、自店には強みや優位性があると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "4. マーケティング・集客",
     questions: [
-      {
-        q: "SNSや広告などの施策が効果的に活用され、集客につながっていると感じますか？",
-        type: "scale5",
-      },
+      { q: "SNSや広告などの施策が効果的に活用され、集客につながっていると感じますか？", type: "scale5" },
     ],
   },
   {
     title: "5. メニューの魅力",
     questions: [
-      {
-        q: "価格や内容を含めたメニュー全体に対して、お客様の満足度は高いと感じますか？",
-        type: "scale5",
-      },
+      { q: "価格や内容を含めたメニュー全体に対して、お客様の満足度は高いと感じますか？", type: "scale5" },
     ],
   },
   {
     title: "6. サービスの質",
     questions: [
-      {
-        q: "提供スピードや接客態度を含めたサービス全体の質は高いと感じますか？",
-        type: "scale5",
-      },
+      { q: "提供スピードや接客態度を含めたサービス全体の質は高いと感じますか？", type: "scale5" },
     ],
   },
 ];
 
 export default function SNSCampaignDesigner() {
   const [productText, setProductText] = useState("");
+  const [industryText, setIndustryText] = useState("");
   const [answers] = useState(() => {
     const generated = {};
     diagnosisStructure.forEach((section, i) => {
       section.questions.forEach((_, j) => {
         const key = `${i}-${j}`;
-        const random = scale5Options[Math.floor(Math.random() * scale5Options.length)];
-        generated[key] = random;
+        generated[key] = scale5Options[Math.floor(Math.random() * scale5Options.length)];
       });
     });
     return generated;
   });
 
-  const [analysisSummary, setAnalysisSummary] = useState("");
-  const [analysisSections, setAnalysisSections] = useState({});
-  const [shortSummary, setShortSummary] = useState("");
+  const [sections, setSections] = useState({});
   const [snsText, setSnsText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -90,73 +70,54 @@ export default function SNSCampaignDesigner() {
   const handleGenerate = async () => {
     setLoading(true);
     setErrorMsg("");
-    setAnalysisSummary("");
-    setAnalysisSections({});
+    setSections({});
     setSnsText("");
     setImageUrl("");
-    setShortSummary("");
 
     try {
-      // 経営分析
-      const prompt = `以下は商材「${productText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これを元に、PEST分析、4C分析、SWOT分析、STP分析、4P分析、さらにSNSキャンペーンの提案まで行ってください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
+      const prompt = `以下は商材「${productText}」および業種「${industryText}」に関する百戦錬磨された地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これをもとに、PEST分析、4C分析、SWOT分析、STP分析、4P分析、さらにSNSキャンペーンの提案を行ってください。フレームワークごとに見出しをつけて構造的に出力してください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
+
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
+
       const data = await res.json();
       const summary = data.result;
-      setAnalysisSummary(summary);
 
-      // セクションごとに分割
-      const titles = [
-        "PEST分析",
-        "4C分析",
-        "SWOT分析",
-        "STP分析",
-        "4P分析",
-        "SNSキャンペーンの提案",
-      ];
-      const newSections = {};
+      // 分割処理
+      const sectionMap = {};
+      const titles = ["PEST分析", "4C分析", "SWOT分析", "STP分析", "4P分析", "SNSキャンペーンの提案"];
       let current = null;
       summary.split("\n").forEach((line) => {
-        const found = titles.find((title) => line.includes(title));
+        const found = titles.find((t) => line.includes(t));
         if (found) {
           current = found;
-          newSections[current] = "";
+          sectionMap[current] = "";
         } else if (current) {
-          newSections[current] += line + "\n";
+          sectionMap[current] += line + "\n";
         }
       });
-      setAnalysisSections(newSections);
+      setSections(sectionMap);
 
-      // 要約生成（画像用）
-      const shortSummaryRes = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: `以下の分析内容を、SNSキャンペーン用画像に適した要約として100文字以内で1文で表現してください：\n\n${summary}`,
-        }),
-      });
-      const shortData = await shortSummaryRes.json();
-      const short = shortData.result.trim();
-      setShortSummary(short);
+      // 🖼 画像生成（要約を画像プロンプトに）
+      const imagePrompt = `以下は「${industryText}」の経営診断に基づいたSNSキャンペーンの要約結果です。この内容をもとに、百戦錬磨の優秀なクリエイティブディレクターとして、Instagramに投稿する「${industryText}向けのプレゼントキャンペーン画像」を生成してください。\n\n【目的】\n${industryText}のInstagramキャンペーン告知画像の生成\n\n【画像構成】\n- 商品やサービスの魅力が視覚的に伝わる要素（例: ${productText} を使用）\n- フォロー＆いいねで参加できるという構図（アイコン含む）\n- 正方形レイアウト、明るく映えるデザイン\n\n【デザイントーン】\n- ブランドや業種に合った色味とトーンで構成\n\n【要約】\n${summary}`;
 
-      // 画像生成（先）
       const imgRes = await fetch("/api/generate-campaign-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ analysis_summary: short }),
+        body: JSON.stringify({ analysis_summary: imagePrompt }),
       });
       const imgData = await imgRes.json();
       setImageUrl(imgData.image_url);
 
-      // 投稿文生成（後）
+      // ✍ 投稿文生成（画像生成後に）
       const snsRes = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: `以下の要約に基づき、InstagramやXで投稿できるキャンペーン文章を作成してください。ターゲットは中小企業の経営者です。絵文字を含め、参加を促す構成にしてください：\n\n${short}`,
+          prompt: `以下の要約に基づき、InstagramやXで投稿できるキャンペーン文章を作成してください。ターゲットは中小企業の経営者です。絵文字を含め、参加を促す構成にしてください：\n\n${summary}`,
         }),
       });
       const snsData = await snsRes.json();
@@ -173,43 +134,48 @@ export default function SNSCampaignDesigner() {
     <div className="max-w-3xl mx-auto bg-white p-6 mt-12 mb-24 rounded shadow">
       <h2 className="text-2xl font-bold text-[#5B7F6F] mb-4">SNSキャンペーン設計</h2>
 
-      <label className="block mb-2 font-semibold text-[#5B7F6F]">
-        商材名（例：地域限定いちご、地元焼肉、クラフトビール など）
-      </label>
+      <label className="block mb-2 font-semibold text-[#5B7F6F]">商材名</label>
       <input
         type="text"
         value={productText}
         onChange={(e) => setProductText(e.target.value)}
         className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
-        placeholder="商材を入力してください"
+        placeholder="例：クラフトビール、餃子、地元野菜"
+      />
+
+      <label className="block mb-2 font-semibold text-[#5B7F6F]">業種</label>
+      <input
+        type="text"
+        value={industryText}
+        onChange={(e) => setIndustryText(e.target.value)}
+        className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
+        placeholder="例：餃子専門店、カフェ、EC事業"
       />
 
       <button
         onClick={handleGenerate}
         className="w-full bg-[#5B7F6F] text-white py-2 rounded hover:opacity-90"
-        disabled={loading || !productText}
+        disabled={loading || !productText || !industryText}
       >
         {loading ? "生成中..." : "キャンペーン設計を開始"}
       </button>
 
       {errorMsg && <p className="text-red-600 mt-4">{errorMsg}</p>}
 
-      {Object.keys(analysisSections).length > 0 && (
+      {Object.entries(sections).length > 0 && (
         <div className="mt-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">経営分析結果は以下の通りです：</h3>
-          {Object.entries(analysisSections).map(([title, content]) => (
+          <h3 className="text-lg font-semibold text-[#5B7F6F] mb-4">経営分析の結果</h3>
+          {Object.entries(sections).map(([title, content]) => (
             <details key={title} className="mb-4 bg-gray-50 p-4 rounded shadow">
-              <summary className="cursor-pointer text-[#5B7F6F] font-semibold">
-                {title}
-              </summary>
-              <pre className="mt-2 whitespace-pre-wrap text-gray-800">{content}</pre>
+              <summary className="cursor-pointer text-[#5B7F6F] font-semibold">{title}</summary>
+              <pre className="mt-2 whitespace-pre-wrap text-gray-800 text-sm">{content}</pre>
             </details>
           ))}
         </div>
       )}
 
       {snsText && (
-        <div className="mt-6">
+        <div className="mt-8">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">SNS投稿テキスト</h3>
           <div className="bg-yellow-50 p-4 rounded shadow text-gray-900 text-sm whitespace-pre-wrap">
             {snsText}
@@ -220,11 +186,7 @@ export default function SNSCampaignDesigner() {
       {imageUrl && (
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">生成されたキャンペーン画像</h3>
-          <img
-            src={imageUrl}
-            alt="キャンペーン画像"
-            className="w-full max-w-md mx-auto rounded shadow border"
-          />
+          <img src={imageUrl} alt="キャンペーン画像" className="w-full max-w-md mx-auto rounded shadow border" />
         </div>
       )}
 
