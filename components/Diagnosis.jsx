@@ -69,10 +69,30 @@ export default function DiagnosisForm() {
     setAnswers((prev) => ({ ...prev, [qKey]: value }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    console.log("保存された回答:", answers);
-    alert("診断内容が保存されました！（仮）");
+    try {
+      const response = await fetch("https://tech0-gen-8-step4-richconnections-back-dbajhyfdcnhbembb.germanywestcentral-01.azurewebsites.net/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ answers }),
+      });
+      if (response.ok) {
+        alert("診断内容が保存されました！");
+      } else {
+        alert("保存に失敗しました");
+      }
+    } catch (error) {
+      console.error("エラー:", error);
+      alert("送信エラーが発生しました");
+    }
+  };
+
+  // 🔽 これを追加！
+  const handleAnalyze = () => {
+    router.push("/analyze");
   };
 
   return (
