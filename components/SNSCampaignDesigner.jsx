@@ -74,7 +74,7 @@ export default function SNSCampaignDesigner() {
     setImageUrl("");
 
     try {
-      const prompt = `以下は商材「${productText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これをもとに、各フレームワークごとに要点を100文字にまとめた分析（PEST分析、4C分析、SWOT分析、STP分析、4P分析）と「SNSキャンペーンの提案」を行ってください。各見出しをつけて出力してください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
+      const prompt = `以下は商材「${productText}」に関する地方中小企業の経営診断結果です。設問はすべて5段階評価で自動回答されています。これをもとに、各フレームワークごとに要点を100文字にまとめた分析（経営診断結果、PEST分析、4C分析、SWOT分析、STP分析、4P分析）と「SNSキャンペーンの提案」を行ってください。各見出しをつけて出力してください。\n\n診断回答:\n${JSON.stringify(answers, null, 2)}`;
 
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -86,7 +86,7 @@ export default function SNSCampaignDesigner() {
       const summary = data.result;
 
       const sectionMap = {};
-      const titles = ["PEST分析", "4C分析", "SWOT分析", "STP分析", "4P分析", "SNSキャンペーンの提案"];
+      const titles = ["経営診断結果","PEST分析", "4C分析", "SWOT分析", "STP分析", "4P分析", "SNSキャンペーンの提案"];
       let current = null;
       summary.split("\n").forEach((line) => {
         const found = titles.find((t) => line.includes(t));
