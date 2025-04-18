@@ -127,7 +127,7 @@ export default function DiagnosisForm() {
         <Link href="/diagnosis-analysis" className="w-full">
           <button
             type="button"
-            className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90"
+            className="bg-[#5B7F6F] text-white px-6 py-3 rounded shadow hover:opacity-90"
           >
             経営分析へ
           </button>
