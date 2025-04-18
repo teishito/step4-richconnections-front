@@ -1,13 +1,13 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Mypage from "../components/MyPage";
+import MyPage from "../components/MyPage";
 
-export default function Mypage() {
+export default function MyPagePage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <main className="flex-grow p-6 flex justify-center items-start">
-        <Mypage />
+        <MyPage />
       </main>
       <Footer />
     </div>
