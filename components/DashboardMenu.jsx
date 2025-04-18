@@ -1,57 +1,46 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 export default function DashboardMenu() {
-  const router = useRouter();
-
-  const handleNavigate = (path) => {
-    router.push(path);
-  };
-
   return (
     <div className="max-w-3xl mx-auto px-4 mt-12 space-y-2 text-center">
-      <Link href="/diagnosis">
-        <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
-          自己診断
-        </button>
-      </Link>
+      <MenuButton href="/diagnosis" label="自己診断" />
+      <Divider />
 
-      <div className="text-gray-400 text-xl">▼</div>
+      <MenuButton href="/diagnosis-analysis" label="経営分析" />
+      <Divider />
 
-      <Link href="/diagnosis-analysis">
-        <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
-          経営分析
-        </button>
-      </Link>
+      <MenuButton href="/sns-campaign" label="SNSキャンペーン設計" />
+      <Divider />
 
-      <div className="text-gray-400 text-xl">▼</div>
+      <Label text="SNS投稿" />
+      <Divider />
 
-      <Link href="/sns-campaign">
-        <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
-          SNSキャンペーン設計
-        </button>
-      </Link>
+      <MenuButton href="/campaign-detail" label="キャンペーン実施/詳細" />
+      <Divider />
 
-      <div className="text-gray-400 text-xl">▼</div>
-      
-      <div className="text-gray-400 text-xl">SNS投稿</div>      
-      
-      <div className="text-gray-400 text-xl">▼</div>
-      
-      <Link href="/campaign-detail">
-        <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
-          キャンペーン実施/詳細
-        </button>
-      </Link>
+      <MenuButton href="/campaign-report" label="キャンペーン実施レポート" />
+    </div>
+  );
+}
 
-      <div className="text-gray-400 text-xl">▼</div>
+function MenuButton({ href, label }) {
+  return (
+    <Link href={href} passHref>
+      <a className="block w-full bg-[#5B7F6F] text-white py-3 rounded-lg font-semibold text-center hover:opacity-90">
+        {label}
+      </a>
+    </Link>
+  );
+}
 
-      <Link href="/campaign-report">
-        <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
-          キャンペーン実施レポート
-        </button>
-      </Link>
+function Divider() {
+  return <div className="text-gray-400 text-xl">▼</div>;
+}
+
+function Label({ text }) {
+  return (
+    <div className="w-full text-center text-[#5B7F6F] font-semibold py-2 border border-dashed border-gray-300 rounded">
+      {text}
     </div>
   );
 }
