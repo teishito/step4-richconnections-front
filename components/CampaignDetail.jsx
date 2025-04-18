@@ -34,9 +34,9 @@ export default function CampaignDetail() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 mt-12 mb-24 rounded shadow">
-      <h2 className="text-2xl font-bold mb-6">キャンペーン投稿の詳細</h2>
-
+    <div className="max-w-3xl mx-auto bg-white p-6 mt-12 mb-24 rounded shadow">
+      <h2 className="text-2xl font-bold text-[#5B7F6F] mb-4">キャンペーン投稿の詳細</h2>
+      
       <div className="flex flex-col gap-3 mb-4">
         <input
           type="text"
