@@ -10,7 +10,7 @@ export default function DashboardMenu() {
   };
 
   return (
-    <div className="space-y-2 text-center mt-12">
+    <div className="max-w-3xl mx-auto space-y-2 text-center mt-12">
       <Link href="/diagnosis">
         <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
           自己診断
