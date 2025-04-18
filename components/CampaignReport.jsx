@@ -11,9 +11,9 @@ export default function CampaignReport() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded shadow mb-20">
-      <h2 className="text-2xl font-bold mb-6 text-[#5B7F6F]">キャンペーン実施レポート</h2>
-
+    <div className="max-w-3xl mx-auto bg-white p-6 mt-12 mb-24 rounded shadow">
+      <h2 className="text-2xl font-bold text-[#5B7F6F] mb-4">キャンペーン実施レポート</h2>
+      
       {reportData ? (
         <div className="space-y-10">
           {["likes", "comments", "engagement"].map((type) => (
