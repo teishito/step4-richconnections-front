@@ -5,9 +5,6 @@ export default function MyPage() {
     companyName: "",
     industry: "",
     contactName: "",
-    email: "",
-    phone: "",
-    website: "",
     description: "",
     strengths: "",
     challenges: "",
@@ -27,22 +24,16 @@ export default function MyPage() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow mt-10 mb-24">
-      <h2 className="text-2xl font-bold text-[#5B7F6F] mb-6">マイページ - 企業情報と経営分析</h2>
+      <h2 className="text-2xl font-bold text-[#5B7F6F] mb-6">マイページ</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <SectionTitle title="企業基本情報" />
         <InputField label="会社名" name="companyName" value={formData.companyName} onChange={handleChange} />
         <InputField label="業種" name="industry" value={formData.industry} onChange={handleChange} />
-        <InputField label="担当者名" name="contactName" value={formData.contactName} onChange={handleChange} />
-        <InputField label="メールアドレス" name="email" type="email" value={formData.email} onChange={handleChange} />
-        <InputField label="電話番号" name="phone" type="tel" value={formData.phone} onChange={handleChange} />
-        <InputField label="WebサイトURL" name="website" type="url" value={formData.website} onChange={handleChange} />
         <TextAreaField label="会社概要" name="description" value={formData.description} onChange={handleChange} />
-
-        <SectionTitle title="経営分析に活かせる情報" />
         <TextAreaField label="自社の強み" name="strengths" value={formData.strengths} onChange={handleChange} />
         <TextAreaField label="現在の課題" name="challenges" value={formData.challenges} onChange={handleChange} />
-        <TextAreaField label="今後取り組みたいこと" name="futureVision" value={formData.futureVision} onChange={handleChange} />
+        <TextAreaField label="今後の展望" name="futureVision" value={formData.futureVision} onChange={handleChange} />
 
         <button
           type="submit"
