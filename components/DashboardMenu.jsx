@@ -10,7 +10,7 @@ export default function DashboardMenu() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-2 text-center mt-12">
+    <div className="max-w-3xl mx-auto px-4 mt-12 space-y-2 text-center">
       <Link href="/diagnosis">
         <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
           自己診断
@@ -34,7 +34,11 @@ export default function DashboardMenu() {
       </Link>
 
       <div className="text-gray-400 text-xl">▼</div>
-
+      
+      <div className="text-gray-400 text-xl">SNS投稿</div>      
+      
+      <div className="text-gray-400 text-xl">▼</div>
+      
       <Link href="/campaign-detail">
         <button className="w-full bg-[#5B7F6F] text-white py-2 rounded-lg hover:opacity-90">
           キャンペーン実施/詳細
