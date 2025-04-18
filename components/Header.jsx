@@ -66,6 +66,11 @@ export default function Header() {
                 キャンペーン実施レポート
               </Link>
             </li>
+            <li>
+              <Link href="/mypage" className="hover:text-indigo-600">
+                マイページ
+              </Link>
+            </li>
             <li className="border-t pt-3 mt-3">
               <span
                 onClick={handleLogout}
