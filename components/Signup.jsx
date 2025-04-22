@@ -10,6 +10,9 @@ export default function Signup() {
   const [agreed, setAgreed] = useState(false);
   const router = useRouter();
 
+    // 環境変数からAPIのベースURLを取得
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -24,7 +27,8 @@ export default function Signup() {
     }
 
     try {
-      const res = await fetch("/api/register", {
+      // フルURLでAPIを呼び出す
+      const res = await fetch(`${apiBaseUrl}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
